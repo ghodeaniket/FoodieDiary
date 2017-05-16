@@ -20,11 +20,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PostCell" rowHeight="144" id="1e0-tM-MH6">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PostCell" rowHeight="144" id="1e0-tM-MH6" customClass="PostTableViewCell" customModule="FoodieDiary" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="144"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1e0-tM-MH6" id="SXL-S5-fA6">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="143.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="144"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="f3S-9g-pB8">
@@ -50,6 +50,10 @@
                                         <constraint firstItem="OSE-68-KeL" firstAttribute="top" secondItem="SXL-S5-fA6" secondAttribute="top" id="ux9-na-wrf"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="postContent" destination="OSE-68-KeL" id="LMe-OC-9PC"/>
+                                    <outlet property="postImageView" destination="f3S-9g-pB8" id="Y0v-z9-5V2"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -71,10 +75,10 @@
             </objects>
             <point key="canvasLocation" x="928.79999999999995" y="126.38680659670166"/>
         </scene>
-        <!--View Controller-->
+        <!--Post Details View Controller-->
         <scene sceneID="8Ib-oM-qZ8">
             <objects>
-                <viewController id="Ywz-2I-3bg" sceneMemberID="viewController">
+                <viewController id="Ywz-2I-3bg" customClass="PostDetailsViewController" customModule="FoodieDiary" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Cp8-pv-Vd3"/>
                         <viewControllerLayoutGuide type="bottom" id="FOL-NZ-FnF"/>
@@ -111,11 +115,25 @@
                                 <color key="tintColor" red="0.17254901959999999" green="0.24313725489999999" blue="0.31372549020000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="Edit Photo"/>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Iqe-Yg-Teu">
+                                <rect key="frame" x="0.0" y="566" width="375" height="37"/>
+                                <color key="backgroundColor" red="0.20392156862745098" green="0.59607843137254901" blue="0.85882352941176465" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="21"/>
+                                <state key="normal" title="Save Post">
+                                    <color key="titleColor" red="0.92549019607843142" green="0.94117647058823528" blue="0.94509803921568625" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="savePost:" destination="Ywz-2I-3bg" eventType="touchUpInside" id="gU5-we-pz6"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.17254901959999999" green="0.24313725489999999" blue="0.31372549020000001" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="Sz2-mL-cWS" secondAttribute="trailing" constant="50" id="6V8-mB-GWH"/>
                             <constraint firstItem="Sz2-mL-cWS" firstAttribute="top" secondItem="27k-c5-XRF" secondAttribute="bottom" constant="34.5" id="A96-Cf-sJW"/>
+                            <constraint firstItem="FOL-NZ-FnF" firstAttribute="top" secondItem="Iqe-Yg-Teu" secondAttribute="bottom" id="D6p-8p-fPY"/>
+                            <constraint firstAttribute="trailing" secondItem="Iqe-Yg-Teu" secondAttribute="trailing" id="EVX-WA-3LB"/>
+                            <constraint firstItem="Iqe-Yg-Teu" firstAttribute="leading" secondItem="bP5-tr-0fq" secondAttribute="leading" id="RL6-4K-lSw"/>
                             <constraint firstItem="i5w-y3-SPw" firstAttribute="trailing" secondItem="bP5-tr-0fq" secondAttribute="trailingMargin" id="b58-2b-xeh"/>
                             <constraint firstItem="i5w-y3-SPw" firstAttribute="leading" secondItem="bP5-tr-0fq" secondAttribute="leadingMargin" id="dkT-ay-o5a"/>
                             <constraint firstItem="kp1-1X-TFU" firstAttribute="centerX" secondItem="bP5-tr-0fq" secondAttribute="centerX" id="eb0-CF-fH3"/>
@@ -127,6 +145,10 @@
                             <constraint firstItem="Sz2-mL-cWS" firstAttribute="centerY" secondItem="bP5-tr-0fq" secondAttribute="centerY" id="v5g-gn-kU6"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="postDescription" destination="i5w-y3-SPw" id="H7D-0w-gIv"/>
+                        <outlet property="postImageView" destination="27k-c5-XRF" id="mZ5-fh-Geh"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fJk-31-i25" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
