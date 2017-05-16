@@ -8,43 +8,59 @@
 
 import UIKit
 
-class PostsTableViewController: UITableViewController {
+class PostsTableViewController: UITableViewController, PostsDataSource {
+    
+    
+    var posts = [Post]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.navigationItem.title = "Foodie Diary"
+        FirebaseHelper.sharedInstance().delegate = self
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        posts.removeAll()
+        tableView.reloadData()
+        FirebaseHelper.sharedInstance().addObserverForNewPosts()
+    }
+    
+    deinit {
+        FirebaseHelper.sharedInstance().removeObserverForNewPosts()
     }
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
-
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return posts.count
     }
 
     @IBAction func addNewPost(_ sender: Any) {
         performSegue(withIdentifier: "PostDetails", sender: self)
     }
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as! PostTableViewCell
+        
+        
+        let currentPost = posts[indexPath.row]
 
         // Configure the cell...
-
+        cell.postContent.text = currentPost.text
         return cell
     }
-    */
+    
+    // MARK: - Post Data Source
+    
+    func newPostAdded(newPost: Post) {
+        posts.append(newPost)
+        tableView.reloadData()
+    }
+    
 
     /*
     // Override to support conditional editing of the table view.
