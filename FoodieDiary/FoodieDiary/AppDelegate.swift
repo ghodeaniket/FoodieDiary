@@ -8,7 +8,6 @@
 
 import UIKit
 import Firebase
-import FirebaseAuthUI
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -23,27 +22,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Setup connection with the Firebase FoodDiary App 
         FIRApp.configure()
+
+        configureInitialVC()
         
-        
+        return true
+    }
+
+    private func configureInitialVC() {
         self.window = UIWindow(frame: UIScreen.main.bounds)
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
         var viewControllerIdentifier: String
+        
+        // Check if user is logged in
         if FirebaseHelper.sharedInstance().getCurrentUser() {
+            // if user is logged in then show Home View Controller
             viewControllerIdentifier = "HomeViewController"
         } else {
             viewControllerIdentifier = "LoginSignupVC"
         }
         
         let initialViewController = storyboard.instantiateViewController(withIdentifier: viewControllerIdentifier)
-
+        
         
         self.window?.rootViewController = initialViewController
         self.window?.makeKeyAndVisible()
-        
-        return true
     }
-
 }
 

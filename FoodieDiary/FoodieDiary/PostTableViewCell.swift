@@ -12,6 +12,7 @@ class PostTableViewCell: UITableViewCell {
 
     @IBOutlet weak var postContent: UILabel!
     @IBOutlet weak var postImageView: UIImageView!
+    @IBOutlet weak var imageActivityIndicator: UIActivityIndicatorView!
     
     
     override func awakeFromNib() {

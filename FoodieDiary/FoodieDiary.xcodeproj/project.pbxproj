@@ -126,8 +126,8 @@
 		25A261D81EC9F165003B5FA8 /* FoodieDiary */ = {
 			isa = PBXGroup;
 			children = (
-				25F741131ECC529A002866AF /* View */,
 				25A261D91EC9F165003B5FA8 /* AppDelegate.swift */,
+				25F741131ECC529A002866AF /* View */,
 				25A262171ECB1A40003B5FA8 /* Model */,
 				25A2620E1ECAD908003B5FA8 /* Controller */,
 				25A262091ECACEDE003B5FA8 /* Firebase */,

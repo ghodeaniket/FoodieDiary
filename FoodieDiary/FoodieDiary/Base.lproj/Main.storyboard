@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16B2553a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BAE-tI-DiD">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BAE-tI-DiD">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -24,7 +24,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="144"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1e0-tM-MH6" id="SXL-S5-fA6">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="143.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="144"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="f3S-9g-pB8">
@@ -39,18 +39,24 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <activityIndicatorView hidden="YES" opaque="NO" alpha="0.80000000000000004" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="hSN-a0-KCB">
+                                            <rect key="frame" x="62" y="62" width="20" height="20"/>
+                                        </activityIndicatorView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="bottom" secondItem="OSE-68-KeL" secondAttribute="bottom" id="26r-VL-vu0"/>
                                         <constraint firstAttribute="bottom" secondItem="f3S-9g-pB8" secondAttribute="bottom" id="6Ul-s9-TtK"/>
+                                        <constraint firstItem="hSN-a0-KCB" firstAttribute="centerX" secondItem="f3S-9g-pB8" secondAttribute="centerX" id="Hgf-gL-lO6"/>
                                         <constraint firstItem="f3S-9g-pB8" firstAttribute="leading" secondItem="SXL-S5-fA6" secondAttribute="leading" id="hGO-p3-2M5"/>
                                         <constraint firstAttribute="trailing" secondItem="OSE-68-KeL" secondAttribute="trailing" constant="8" id="kjs-Ce-BM4"/>
+                                        <constraint firstItem="hSN-a0-KCB" firstAttribute="centerY" secondItem="f3S-9g-pB8" secondAttribute="centerY" id="lO0-Q9-D93"/>
                                         <constraint firstItem="f3S-9g-pB8" firstAttribute="top" secondItem="SXL-S5-fA6" secondAttribute="top" id="pW0-n2-6KL"/>
                                         <constraint firstItem="OSE-68-KeL" firstAttribute="leading" secondItem="f3S-9g-pB8" secondAttribute="trailing" constant="8" id="qI9-dq-5V6"/>
                                         <constraint firstItem="OSE-68-KeL" firstAttribute="top" secondItem="SXL-S5-fA6" secondAttribute="top" id="ux9-na-wrf"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="imageActivityIndicator" destination="hSN-a0-KCB" id="qPM-ak-mSP"/>
                                     <outlet property="postContent" destination="OSE-68-KeL" id="LMe-OC-9PC"/>
                                     <outlet property="postImageView" destination="f3S-9g-pB8" id="Y0v-z9-5V2"/>
                                 </connections>
@@ -219,12 +225,18 @@
                                         <color key="textColor" red="0.20392156859999999" green="0.59607843140000005" blue="0.85882352939999995" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="BAE-tI-DiD" id="Qh0-Rh-2L9"/>
+                                        </connections>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter your Password" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Upb-8O-CM6">
                                         <rect key="frame" x="0.0" y="38" width="335" height="30"/>
                                         <color key="textColor" red="0.20392156859999999" green="0.59607843140000005" blue="0.85882352939999995" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="BAE-tI-DiD" id="awp-ex-EJf"/>
+                                        </connections>
                                     </textField>
                                 </subviews>
                             </stackView>
@@ -259,11 +271,17 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="dismissKeyboardRecognizer" destination="8ku-aA-B9l" id="TMZ-by-ZIK"/>
                         <outlet property="emailTextField" destination="vXc-em-5Gj" id="N22-dq-wpd"/>
                         <outlet property="passwordTextField" destination="Upb-8O-CM6" id="UUU-AR-zx3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mqN-mm-iPY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="8ku-aA-B9l">
+                    <connections>
+                        <action selector="tappedView:" destination="BAE-tI-DiD" id="R6e-ag-GGN"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-777" y="125"/>
         </scene>
@@ -272,7 +290,7 @@
             <objects>
                 <navigationController storyboardIdentifier="HomeViewController" automaticallyAdjustsScrollViewInsets="NO" id="034-VI-8ML" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="0fb-8n-9DT">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="0fb-8n-9DT">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.90588235294117647" green="0.29803921568627451" blue="0.23529411764705882" alpha="1" colorSpace="calibratedRGB"/>

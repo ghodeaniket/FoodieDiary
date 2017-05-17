@@ -66,7 +66,10 @@ class PostsTableViewController: UITableViewController, PostsDataSource {
         
         let currentPost = posts[indexPath.row]
         cell.postImageView.image = #imageLiteral(resourceName: "placeholder_rev")
+        cell.imageActivityIndicator.isHidden = true
         if let imageUrl = currentPost.imageUrl {
+            cell.imageActivityIndicator.isHidden = false
+            cell.imageActivityIndicator.startAnimating()
             FirebaseHelper.sharedInstance().getImage(forImageUrl: imageUrl, completionHandler: { (data, error) in
                 // display image
                 let postImage = UIImage.init(data: data!, scale: 50)
@@ -77,6 +80,8 @@ class PostsTableViewController: UITableViewController, PostsDataSource {
                         cell.setNeedsLayout()
                     }
                 }
+                cell.imageActivityIndicator.isHidden = true
+                cell.imageActivityIndicator.stopAnimating()
             })
         }
         

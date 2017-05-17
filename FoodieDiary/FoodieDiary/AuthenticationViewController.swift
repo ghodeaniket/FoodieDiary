@@ -10,23 +10,31 @@ import UIKit
 
 class AuthenticationViewController: UIViewController {
 
+    // MARK: - Properties
+    
+    var keyboardOnScreen = false
+    
     // MARK: - Outlets
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet var dismissKeyboardRecognizer: UITapGestureRecognizer!
     
     // MARK: - Lifecycle
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+    override func viewWillAppear(_ animated: Bool) {
+        subscribeToKeyboardNotifications()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        unsubscribeFromAllNotifications()
     }
     
     // MARK: - Actions
     
     @IBAction func createAccount(_ sender: Any) {
-        if let email = emailTextField.text, email.isEmpty {
-            showAlert("Error", "Please enter your email and password")
+        
+        if emailTextField.text!.isEmpty || passwordTextField.text!.isEmpty {
+            showAlert("Error", "Email or Password Empty.")
         } else {
             FirebaseHelper.sharedInstance().createAccount(emailTextField.text!, passwordTextField.text!, completionHandler: { (error) in
                 if error == nil {
@@ -40,8 +48,8 @@ class AuthenticationViewController: UIViewController {
     }
     
     @IBAction func loginUser(_ sender: Any) {
-        if let email = emailTextField.text, email.isEmpty {
-            showAlert("Error", "Please enter your email and password")
+        if emailTextField.text!.isEmpty || passwordTextField.text!.isEmpty {
+            showAlert("Error", "Email or Password Empty.")
         } else {
             FirebaseHelper.sharedInstance().loginUser(emailTextField.text!, passwordTextField.text!, completionHandler: { (error) in
                 if error == nil {
@@ -68,4 +76,77 @@ class AuthenticationViewController: UIViewController {
             })
         }
     }
+    
+    @IBAction func tappedView(_ sender: Any) {
+        resignTextFields()
+    }
 }
+
+// MARK: - AuthenticationViewController (Notifications)
+
+extension AuthenticationViewController {
+    
+    func subscribeToKeyboardNotifications() {
+        subscribeToNotification(.UIKeyboardWillShow, selector: #selector(keyboardWillShow))
+        subscribeToNotification(.UIKeyboardWillHide, selector: #selector(keyboardWillHide))
+        subscribeToNotification(.UIKeyboardDidShow, selector: #selector(keyboardDidShow))
+        subscribeToNotification(.UIKeyboardDidHide, selector: #selector(keyboardDidHide))
+    }
+    
+    func subscribeToNotification(_ name: NSNotification.Name, selector: Selector) {
+        NotificationCenter.default.addObserver(self, selector: selector, name: name, object: nil)
+    }
+    
+    func unsubscribeFromAllNotifications() {
+        NotificationCenter.default.removeObserver(self)
+    }
+}
+
+// MARK: - AuthenticationViewController: UITextFieldDelegate
+
+extension AuthenticationViewController: UITextFieldDelegate {
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        resignTextFields()
+        return true
+    }
+    
+    // MARK: Show/Hide Keyboard
+    
+    func keyboardWillShow(_ notification: Notification) {
+        if !keyboardOnScreen {
+            self.view.frame.origin.y -= self.keyboardHeight(notification)
+        }
+    }
+    
+    func keyboardWillHide(_ notification: Notification) {
+        if keyboardOnScreen {
+            self.view.frame.origin.y += self.keyboardHeight(notification)
+        }
+    }
+    
+    func keyboardDidShow(_ notification: Notification) {
+        keyboardOnScreen = true
+        dismissKeyboardRecognizer.isEnabled = true
+    }
+    
+    func keyboardDidHide(_ notification: Notification) {
+        dismissKeyboardRecognizer.isEnabled = false
+        keyboardOnScreen = false
+    }
+    
+    func keyboardHeight(_ notification: Notification) -> CGFloat {
+        return ((notification as NSNotification).userInfo![UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue.height
+    }
+    
+    func resignTextFields() {
+        if emailTextField.isFirstResponder {
+            emailTextField.resignFirstResponder()
+        }
+        if passwordTextField.isFirstResponder {
+            passwordTextField.resignFirstResponder()
+        }
+    }
+}
+
+
