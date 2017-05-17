@@ -2,6 +2,7 @@
 FoodieDiary is an iOS app written in Swift3 and Xcode8 to help Foodie add the review to recently visited eatery. These posts are visible to all users of the app and they will also be able to add comments to the reviews posted by other users
 
 This app allows users to:
+- Create accound using email/password
 - Login to the app using email/password
 - Add reviews to recently visited eatery place
 - Add photos to the review (optional)
