@@ -8,12 +8,13 @@
 
 import UIKit
 
-class PostDetailsViewController: UIViewController {
+class PostDetailsViewController: UIViewController, UINavigationControllerDelegate {
 
     // MARK: Properties
     
     var postLength: NSNumber = 100
     var keyboardOnScreen = false
+    var photoData: Data?
     
     // MARK: Outlets
     
@@ -42,12 +43,36 @@ class PostDetailsViewController: UIViewController {
     
     @IBAction func savePost(_ sender: Any) {
         if !postDescription.text.isEmpty {
-            FirebaseHelper.sharedInstance().addPost(post: postDescription.text!)
+            FirebaseHelper.sharedInstance().addPost(post: postDescription.text!, photoData: photoData)
             navigationController?.popViewController(animated: true)
         }
     }
     @IBAction func tappedView(_ sender: Any) {
         resignTextView()
+    }
+    
+    @IBAction func addPhoto(_ sender: Any) {
+        let picker = UIImagePickerController()
+        picker.delegate = self
+        picker.sourceType = .photoLibrary
+        present(picker, animated: true, completion: nil)
+    }
+}
+
+// MARK: - PostDetailsViewController: UIImagePickerControllerDelegate
+
+extension PostDetailsViewController: UIImagePickerControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String:Any]) {
+        // constant to hold the information about the photo
+        if let photo = info[UIImagePickerControllerOriginalImage] as? UIImage, let photoData = UIImageJPEGRepresentation(photo, 0.8) {
+            self.photoData = photoData
+            self.postImageView.image = UIImage(data: photoData)
+        }
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
     }
 }
 

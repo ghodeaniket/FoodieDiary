@@ -11,5 +11,5 @@ import Foundation
 public struct Post {
     var userName: String
     var text: String
-    var imageUrl: String
+    var imageUrl: String?
 }

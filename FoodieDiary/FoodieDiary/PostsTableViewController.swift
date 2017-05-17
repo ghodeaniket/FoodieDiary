@@ -64,12 +64,25 @@ class PostsTableViewController: UITableViewController, PostsDataSource {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as! PostTableViewCell
         
-        
         let currentPost = posts[indexPath.row]
-
+        cell.postImageView.image = #imageLiteral(resourceName: "placeholder_rev")
+        if let imageUrl = currentPost.imageUrl {
+            FirebaseHelper.sharedInstance().getImage(forImageUrl: imageUrl, completionHandler: { (data, error) in
+                // display image
+                let postImage = UIImage.init(data: data!, scale: 50)
+                // check if the cell is still on the screen, if so, update cell image
+                if cell == tableView.cellForRow(at: indexPath) {
+                    DispatchQueue.main.async {
+                        cell.postImageView?.image = postImage
+                        cell.setNeedsLayout()
+                    }
+                }
+            })
+        }
+        
         // Configure the cell...
         cell.postContent.text = currentPost.text
-        cell.postImageView.image = #imageLiteral(resourceName: "placeholder_rev")
+        
         return cell
     }
     
