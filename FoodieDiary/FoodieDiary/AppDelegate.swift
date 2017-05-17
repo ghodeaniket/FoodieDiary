@@ -23,6 +23,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Setup connection with the Firebase FoodDiary App 
         FIRApp.configure()
+        
+        
+        self.window = UIWindow(frame: UIScreen.main.bounds)
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        var viewControllerIdentifier: String
+        if FirebaseHelper.sharedInstance().getCurrentUser() {
+            viewControllerIdentifier = "HomeViewController"
+        } else {
+            viewControllerIdentifier = "LoginSignupVC"
+        }
+        
+        let initialViewController = storyboard.instantiateViewController(withIdentifier: viewControllerIdentifier)
+
+        
+        self.window?.rootViewController = initialViewController
+        self.window?.makeKeyAndVisible()
+        
         return true
     }
 

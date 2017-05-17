@@ -13,14 +13,20 @@ class FirebaseHelper: NSObject {
     
     // MARK: Properties
     var delegate: PostsDataSource?
-    var displayName = "Anonymous"
+    
     var ref: FIRDatabaseReference!
     fileprivate var _refHandle: FIRDatabaseHandle!
+    
+    var user: FIRUser?
+    var displayName = "Anonymous"
     
     func configureDatabase() {
         print("Configure Database!")
         ref = FIRDatabase.database().reference()
     }
+    
+   
+    
     
     func addPost(post: String) {
         
