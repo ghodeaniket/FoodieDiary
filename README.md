@@ -8,7 +8,8 @@ This app allows users to:
 - Add photos to the review (optional)
 
 ## Installation
-Download Apple’s IDE Xcode from the App Store, clone project, then build and run.
+Download Apple’s IDE Xcode from the App Store,
+Simply clone this repo and run pod install to get all the dependencies.
 ## Contributing (Under Progress)
 1. Fork it!
 2. Create your feature branch: `git checkout -b my-new-feature`

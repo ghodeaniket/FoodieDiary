@@ -22,10 +22,12 @@ class AuthenticationViewController: UIViewController {
     // MARK: - Lifecycle
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         subscribeToKeyboardNotifications()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         unsubscribeFromAllNotifications()
     }
     
@@ -36,12 +38,16 @@ class AuthenticationViewController: UIViewController {
         if emailTextField.text!.isEmpty || passwordTextField.text!.isEmpty {
             showAlert("Error", "Email or Password Empty.")
         } else {
+            ActivityIndicator.sharedInstance().startActivityIndicator(self)
             FirebaseHelper.sharedInstance().createAccount(emailTextField.text!, passwordTextField.text!, completionHandler: { (error) in
-                if error == nil {
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController")
-                    self.present(vc!, animated: true, completion: nil)
-                } else {
-                    self.showAlert("Error", error!.localizedDescription)
+                performUIUpdatesOnMain {
+                    ActivityIndicator.sharedInstance().stopActivityIndicator(self)
+                    if error == nil {
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController")
+                        self.present(vc!, animated: true, completion: nil)
+                    } else {
+                        self.showAlert("Error", error!.localizedDescription)
+                    }
                 }
             })
         }
@@ -51,12 +57,16 @@ class AuthenticationViewController: UIViewController {
         if emailTextField.text!.isEmpty || passwordTextField.text!.isEmpty {
             showAlert("Error", "Email or Password Empty.")
         } else {
+            ActivityIndicator.sharedInstance().startActivityIndicator(self)
             FirebaseHelper.sharedInstance().loginUser(emailTextField.text!, passwordTextField.text!, completionHandler: { (error) in
-                if error == nil {
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController")
-                    self.present(vc!, animated: true, completion: nil)
-                } else {
-                    self.showAlert("Error", error!.localizedDescription)
+                ActivityIndicator.sharedInstance().stopActivityIndicator(self)
+                performUIUpdatesOnMain {
+                    if error == nil {
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController")
+                        self.present(vc!, animated: true, completion: nil)
+                    } else {
+                        self.showAlert("Error", error!.localizedDescription)
+                    }
                 }
             })
         }

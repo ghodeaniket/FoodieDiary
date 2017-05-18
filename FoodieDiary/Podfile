@@ -7,6 +7,8 @@ pod 'Firebase/Storage'
 pod 'Firebase/Core'
 pod 'Firebase/Database'
 pod 'Firebase/Auth'
+pod 'SDWebImage'
+pod 'FirebaseUI/Storage'
 
 target 'FoodieDiary' do
 end

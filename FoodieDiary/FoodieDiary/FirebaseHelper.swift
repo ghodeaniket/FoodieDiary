@@ -74,15 +74,8 @@ class FirebaseHelper: NSObject {
         })
     }
     
-    func getImage(forImageUrl imageUrl: String, completionHandler: @escaping (_ data: Data?, _ error: Error?) -> Void) {
-        FIRStorage.storage().reference(forURL: imageUrl).data(withMaxSize: INT64_MAX, completion: { (data, error) in
-            guard error == nil else {
-                print("error downloading: \(error)")
-                return
-            }            
-            completionHandler(data, error)
-        })
-
+    func getImage(forImageUrl imageUrl: String) -> FIRStorageReference {
+        return FIRStorage.storage().reference(forURL: imageUrl)
     }
     
     func removeObserverForNewPosts() {

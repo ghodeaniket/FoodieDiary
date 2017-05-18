@@ -25,6 +25,8 @@
 		25F741171ECC5B9C002866AF /* AuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F741161ECC5B9C002866AF /* AuthenticationViewController.swift */; };
 		25F741191ECC5D49002866AF /* FirebaseAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F741181ECC5D49002866AF /* FirebaseAuth.swift */; };
 		25F7411B1ECC5E26002866AF /* ViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F7411A1ECC5E26002866AF /* ViewControllerExtension.swift */; };
+		25F7411D1ECD829F002866AF /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F7411C1ECD829F002866AF /* ActivityIndicator.swift */; };
+		25F7411F1ECD831B002866AF /* GCDBlackBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F7411E1ECD831B002866AF /* GCDBlackBox.swift */; };
 		A0F73EFBE4120195AC1776F9 /* Pods_FoodieDiary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5D7839B4EA13575FA1A6F2F /* Pods_FoodieDiary.framework */; };
 /* End PBXBuildFile section */
 
@@ -70,6 +72,8 @@
 		25F741161ECC5B9C002866AF /* AuthenticationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationViewController.swift; sourceTree = "<group>"; };
 		25F741181ECC5D49002866AF /* FirebaseAuth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseAuth.swift; sourceTree = "<group>"; };
 		25F7411A1ECC5E26002866AF /* ViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerExtension.swift; sourceTree = "<group>"; };
+		25F7411C1ECD829F002866AF /* ActivityIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
+		25F7411E1ECD831B002866AF /* GCDBlackBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCDBlackBox.swift; sourceTree = "<group>"; };
 		7D3B2582F02D23DC9F64B39D /* Pods-FoodieDiary.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FoodieDiary.release.xcconfig"; path = "Pods/Target Support Files/Pods-FoodieDiary/Pods-FoodieDiary.release.xcconfig"; sourceTree = "<group>"; };
 		A14DFDF16F6B25AACB373282 /* Pods-FoodieDiary.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FoodieDiary.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FoodieDiary/Pods-FoodieDiary.debug.xcconfig"; sourceTree = "<group>"; };
 		B5D7839B4EA13575FA1A6F2F /* Pods_FoodieDiary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FoodieDiary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -127,6 +131,7 @@
 			isa = PBXGroup;
 			children = (
 				25A261D91EC9F165003B5FA8 /* AppDelegate.swift */,
+				25F7411E1ECD831B002866AF /* GCDBlackBox.swift */,
 				25F741131ECC529A002866AF /* View */,
 				25A262171ECB1A40003B5FA8 /* Model */,
 				25A2620E1ECAD908003B5FA8 /* Controller */,
@@ -208,6 +213,7 @@
 		25F741131ECC529A002866AF /* View */ = {
 			isa = PBXGroup;
 			children = (
+				25F7411C1ECD829F002866AF /* ActivityIndicator.swift */,
 				25F741141ECC52A5002866AF /* BorderedButton.swift */,
 			);
 			name = View;
@@ -421,7 +427,9 @@
 				25A2620D1ECAD45B003B5FA8 /* FirebaseContants.swift in Sources */,
 				25A262101ECAD91E003B5FA8 /* PostsTableViewController.swift in Sources */,
 				25F741171ECC5B9C002866AF /* AuthenticationViewController.swift in Sources */,
+				25F7411D1ECD829F002866AF /* ActivityIndicator.swift in Sources */,
 				25F741151ECC52A5002866AF /* BorderedButton.swift in Sources */,
+				25F7411F1ECD831B002866AF /* GCDBlackBox.swift in Sources */,
 				25A262121ECADD81003B5FA8 /* PostTableViewCell.swift in Sources */,
 				25A262191ECB1A4E003B5FA8 /* Post.swift in Sources */,
 				25A262161ECB1967003B5FA8 /* PostsDataSource.swift in Sources */,

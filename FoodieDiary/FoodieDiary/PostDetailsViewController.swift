@@ -24,10 +24,6 @@ class PostDetailsViewController: UIViewController, UINavigationControllerDelegat
     
     // MARK: Life Cycle
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         subscribeToKeyboardNotifications()
@@ -105,6 +101,12 @@ extension PostDetailsViewController: UITextViewDelegate {
         return newLength <= postLength.intValue
     }
     
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        if textView.text == "Add New Review" {
+            textView.text = ""
+        }
+        return true
+    }
     
     // MARK: Show/Hide Keyboard
     

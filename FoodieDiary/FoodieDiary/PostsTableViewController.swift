@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseStorageUI
 
 class PostsTableViewController: UITableViewController, PostsDataSource {
     
@@ -19,7 +20,7 @@ class PostsTableViewController: UITableViewController, PostsDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.navigationItem.title = "Foodie Diary"
+        navigationItem.title = "Foodie Diary"
         FirebaseHelper.sharedInstance().delegate = self
     }
 
@@ -31,7 +32,9 @@ class PostsTableViewController: UITableViewController, PostsDataSource {
         tableView.reloadData()
         FirebaseHelper.sharedInstance().addObserverForNewPosts()
     }
-    deinit {
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         FirebaseHelper.sharedInstance().removeObserverForNewPosts()
     }
     
@@ -44,6 +47,7 @@ class PostsTableViewController: UITableViewController, PostsDataSource {
     @IBAction func logoutUser(_ sender: Any) {
         FirebaseHelper.sharedInstance().signOutUser { (error) in
             if error == nil {
+                self.dismiss(animated: true, completion: nil)
                 let vc = self.storyboard?.instantiateViewController(withIdentifier: "LoginSignupVC")
                 self.present(vc!, animated: true, completion: nil)
             } else {
@@ -58,36 +62,22 @@ class PostsTableViewController: UITableViewController, PostsDataSource {
         // #warning Incomplete implementation, return the number of rows
         return posts.count
     }
-
-    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as! PostTableViewCell
         
         let currentPost = posts[indexPath.row]
-        cell.postImageView.image = #imageLiteral(resourceName: "placeholder_rev")
-        cell.imageActivityIndicator.isHidden = true
+        
         if let imageUrl = currentPost.imageUrl {
-            cell.imageActivityIndicator.isHidden = false
-            cell.imageActivityIndicator.startAnimating()
-            FirebaseHelper.sharedInstance().getImage(forImageUrl: imageUrl, completionHandler: { (data, error) in
-                // display image
-                let postImage = UIImage.init(data: data!, scale: 50)
-                // check if the cell is still on the screen, if so, update cell image
-                if cell == tableView.cellForRow(at: indexPath) {
-                    DispatchQueue.main.async {
-                        cell.postImageView?.image = postImage
-                        cell.setNeedsLayout()
-                    }
-                }
-                cell.imageActivityIndicator.isHidden = true
-                cell.imageActivityIndicator.stopAnimating()
-            })
+            let imageRef = FirebaseHelper.sharedInstance().getImage(forImageUrl: imageUrl)
+            
+            // Cache images with FirebaseUI SDWebImage extension
+            
+            cell.postImageView.sd_setImage(with: imageRef, placeholderImage: #imageLiteral(resourceName: "placeholder_rev"))
+        } else {
+            cell.postImageView.image = #imageLiteral(resourceName: "placeholder_rev")
         }
-        
-        // Configure the cell...
         cell.postContent.text = currentPost.text
-        
         return cell
     }
     
