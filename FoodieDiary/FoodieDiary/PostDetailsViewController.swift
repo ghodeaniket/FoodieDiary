@@ -47,11 +47,38 @@ class PostDetailsViewController: UIViewController, UINavigationControllerDelegat
     }
     
     @IBAction func addPhoto(_ sender: Any) {
+        let alert = UIAlertController(title: "Choose Image", message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: { _ in
+            self.openCamera()
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Gallery", style: .default, handler: { _ in
+            self.openGallery()
+        }))
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
+    // MARK: Helper
+    
+    private func openCamera() {
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            let picker = UIImagePickerController()
+            picker.delegate = self
+            picker.sourceType = .camera
+            present(picker, animated: true, completion: nil)
+        } else {
+            showAlert("Warning", "Camera not available!")
+        }
+    }
+    
+    private func openGallery() {
         let picker = UIImagePickerController()
         picker.delegate = self
         picker.sourceType = .photoLibrary
         present(picker, animated: true, completion: nil)
     }
+    
 }
 
 // MARK: - PostDetailsViewController: UIImagePickerControllerDelegate
