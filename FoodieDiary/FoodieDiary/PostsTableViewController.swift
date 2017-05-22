@@ -78,6 +78,7 @@ class PostsTableViewController: UITableViewController, PostsDataSource {
             cell.postImageView.image = #imageLiteral(resourceName: "placeholder_rev")
         }
         cell.postContent.text = currentPost.text
+        cell.postAuthorLabel.text = "Added By \(currentPost.userName)"
         return cell
     }
     

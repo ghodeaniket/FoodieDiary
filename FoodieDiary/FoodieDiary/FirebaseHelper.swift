@@ -31,7 +31,7 @@ class FirebaseHelper: NSObject {
     
     
     
-    func addPost(post: String, photoData: Data?) {
+    func addPost(post: String, photoData: Data?, completionHandler: @escaping (_ error: Error?) -> Void) {
         var data = [PostFields.text: post, PostFields.name: displayName]
         
         if let photoData = photoData {
@@ -46,15 +46,18 @@ class FirebaseHelper: NSObject {
             storageRef.child(imagePath).put(photoData, metadata: metadata) { (metadata, error) in
                 if let error = error {
                     print("error uploading: \(error)")
+                    completionHandler(error)
                     return
                 }
                 // set imageUrl value for the message
                 data[PostFields.imageUrl] = self.storageRef.child((metadata?.path)!).description
                 self.ref.child("posts").childByAutoId().setValue(data)
+                completionHandler(nil)
             }
         } else {
             // like specifying "posts/[some auto id]"
             ref.child("posts").childByAutoId().setValue(data)
+            completionHandler(nil)
         }
         
         

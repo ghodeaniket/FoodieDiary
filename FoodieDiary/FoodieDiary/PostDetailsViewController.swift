@@ -38,8 +38,16 @@ class PostDetailsViewController: UIViewController, UINavigationControllerDelegat
     
     @IBAction func savePost(_ sender: Any) {
         if !postDescription.text.isEmpty {
-            FirebaseHelper.sharedInstance().addPost(post: postDescription.text!, photoData: photoData)
-            navigationController?.popViewController(animated: true)
+            ActivityIndicator.sharedInstance().startActivityIndicator(self)
+            FirebaseHelper.sharedInstance().addPost(post: postDescription.text!, photoData: photoData, completionHandler: { (error) in
+                performUIUpdatesOnMain {
+                    ActivityIndicator.sharedInstance().stopActivityIndicator(self)
+                    if let _ = error {
+                        self.showAlert("Error", "Unknown Error while adding post!")
+                    }
+                    self.navigationController?.popViewController(animated: true)
+                }
+            })
         }
     }
     @IBAction func tappedView(_ sender: Any) {

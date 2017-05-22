@@ -34,24 +34,45 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OSE-68-KeL">
-                                            <rect key="frame" x="151" y="0.0" width="216" height="143"/>
+                                            <rect key="frame" x="151" y="0.0" width="208" height="20.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gNb-jW-OjF">
+                                            <rect key="frame" x="143" y="123" width="212" height="21"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="21" id="3hM-vW-dyk"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <activityIndicatorView hidden="YES" opaque="NO" alpha="0.80000000000000004" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="hSN-a0-KCB">
                                             <rect key="frame" x="62" y="62" width="20" height="20"/>
                                         </activityIndicatorView>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RXX-I3-jbm" userLabel="Separator">
+                                            <rect key="frame" x="163" y="121" width="184" height="2"/>
+                                            <color key="backgroundColor" red="0.47324521232031114" green="0.65488341417227258" blue="0.82397062463808779" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="2" id="rAo-a7-q0Q"/>
+                                            </constraints>
+                                        </view>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="bottom" secondItem="OSE-68-KeL" secondAttribute="bottom" id="26r-VL-vu0"/>
+                                        <constraint firstAttribute="bottom" secondItem="gNb-jW-OjF" secondAttribute="bottom" id="0c8-nE-07Q"/>
+                                        <constraint firstItem="gNb-jW-OjF" firstAttribute="top" secondItem="RXX-I3-jbm" secondAttribute="bottom" id="4JL-uP-1pr"/>
                                         <constraint firstAttribute="bottom" secondItem="f3S-9g-pB8" secondAttribute="bottom" id="6Ul-s9-TtK"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="RXX-I3-jbm" secondAttribute="trailing" constant="20" id="DMA-3L-8g9"/>
                                         <constraint firstItem="hSN-a0-KCB" firstAttribute="centerX" secondItem="f3S-9g-pB8" secondAttribute="centerX" id="Hgf-gL-lO6"/>
+                                        <constraint firstItem="RXX-I3-jbm" firstAttribute="leading" secondItem="f3S-9g-pB8" secondAttribute="trailing" constant="20" id="KOX-4R-6Va"/>
+                                        <constraint firstItem="gNb-jW-OjF" firstAttribute="leading" secondItem="f3S-9g-pB8" secondAttribute="trailing" id="YlQ-kV-CNz"/>
+                                        <constraint firstItem="OSE-68-KeL" firstAttribute="leading" secondItem="f3S-9g-pB8" secondAttribute="trailing" constant="8" id="eyV-G2-WJt"/>
                                         <constraint firstItem="f3S-9g-pB8" firstAttribute="leading" secondItem="SXL-S5-fA6" secondAttribute="leading" id="hGO-p3-2M5"/>
-                                        <constraint firstAttribute="trailing" secondItem="OSE-68-KeL" secondAttribute="trailing" constant="8" id="kjs-Ce-BM4"/>
                                         <constraint firstItem="hSN-a0-KCB" firstAttribute="centerY" secondItem="f3S-9g-pB8" secondAttribute="centerY" id="lO0-Q9-D93"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="OSE-68-KeL" secondAttribute="trailing" constant="8" id="pV7-Mc-RDc"/>
                                         <constraint firstItem="f3S-9g-pB8" firstAttribute="top" secondItem="SXL-S5-fA6" secondAttribute="top" id="pW0-n2-6KL"/>
-                                        <constraint firstItem="OSE-68-KeL" firstAttribute="leading" secondItem="f3S-9g-pB8" secondAttribute="trailing" constant="8" id="qI9-dq-5V6"/>
+                                        <constraint firstAttribute="trailing" secondItem="gNb-jW-OjF" secondAttribute="trailing" constant="20" id="pdZ-Vb-y5P"/>
                                         <constraint firstItem="OSE-68-KeL" firstAttribute="top" secondItem="SXL-S5-fA6" secondAttribute="top" id="ux9-na-wrf"/>
                                     </constraints>
                                     <variation key="default">
@@ -62,6 +83,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="imageActivityIndicator" destination="hSN-a0-KCB" id="qPM-ak-mSP"/>
+                                    <outlet property="postAuthorLabel" destination="gNb-jW-OjF" id="mjK-BB-JKi"/>
                                     <outlet property="postContent" destination="OSE-68-KeL" id="LMe-OC-9PC"/>
                                     <outlet property="postImageView" destination="f3S-9g-pB8" id="Y0v-z9-5V2"/>
                                 </connections>
