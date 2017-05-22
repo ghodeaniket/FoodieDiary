@@ -31,6 +31,7 @@ class PostsTableViewController: UITableViewController, PostsDataSource {
         
         tableView.reloadData()
         FirebaseHelper.sharedInstance().addObserverForNewPosts()
+        ActivityIndicator.sharedInstance().startActivityIndicator(self)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -45,13 +46,17 @@ class PostsTableViewController: UITableViewController, PostsDataSource {
     }
     
     @IBAction func logoutUser(_ sender: Any) {
+        ActivityIndicator.sharedInstance().startActivityIndicator(self)
         FirebaseHelper.sharedInstance().signOutUser { (error) in
-            if error == nil {
-                self.dismiss(animated: true, completion: nil)
-                let vc = self.storyboard?.instantiateViewController(withIdentifier: "LoginSignupVC")
-                self.present(vc!, animated: true, completion: nil)
-            } else {
-                self.showAlert("Error", error!.localizedDescription)
+            performUIUpdatesOnMain {
+                ActivityIndicator.sharedInstance().stopActivityIndicator(self)
+                if error == nil {
+                    self.dismiss(animated: true, completion: nil)
+                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "LoginSignupVC")
+                    self.present(vc!, animated: true, completion: nil)
+                } else {
+                    self.showAlert("Error", error!.localizedDescription)
+                }
             }
         }
     }
@@ -82,9 +87,29 @@ class PostsTableViewController: UITableViewController, PostsDataSource {
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if let cell = tableView.cellForRow(at: indexPath){
+            let currentPost = posts[indexPath.row]
+            if currentPost.userName == FirebaseHelper.sharedInstance().displayName {
+                
+                // TODO: Remove the post from Firebase
+                return true
+            }
+        }
+        return false
+        
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            print("Delete")
+        }
+    }
+    
     // MARK: - Post Data Source
     
     func newPostAdded(newPost: Post) {
+        ActivityIndicator.sharedInstance().stopActivityIndicator(self)
         posts.append(newPost)
         tableView.reloadData()
     }
