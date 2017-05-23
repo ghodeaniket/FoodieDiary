@@ -14,7 +14,6 @@ class FirebaseHelper: NSObject {
     // MARK: Properties
     var delegate: PostsDataSource?
     var ref: FIRDatabaseReference!
-    fileprivate var _refHandle: FIRDatabaseHandle!
     var storageRef: FIRStorageReference!
     var user: FIRUser?
     var displayName = "Anonymous"
@@ -59,21 +58,32 @@ class FirebaseHelper: NSObject {
             ref.child("posts").childByAutoId().setValue(data)
             completionHandler(nil)
         }
-        
-        
     }
     
-    func addObserverForNewPosts(){
+    func removePost(post: Post, completionHandler: @escaping (_ error: Error?) -> Void) {
+        ref.child("posts").child(post.key).removeValue { (error, snapShotRef) in
+            if (error != nil) {
+                print("post removed!")
+                completionHandler(nil)
+            } else {
+                completionHandler(error)
+            }
+        }
+    }
+    
+    func addObserverForPosts(){
         
-        _refHandle = ref.child("posts").observe(.childAdded, with: { (postSnapShot) in
+        ref.child("posts").observe(.childAdded, with: { (postSnapShot) in
             // Parse Snapshot and create Post object
-            let post = postSnapShot.value as! [String: String]
-            let name = post[PostFields.name] ?? "[Username]"
-            let postText = post[PostFields.text] ?? "Empty Post"
-            let imageUrl = post[PostFields.imageUrl]
-            let newPost = Post(userName: name, text: postText, imageUrl: imageUrl)
             
-            self.delegate?.newPostAdded(newPost: newPost)
+            let newPost = Post(postSnapShot)
+            performUIUpdatesOnMain {
+                self.delegate?.newPostAdded(newPost: newPost)
+            }            
+        })
+        
+        ref.child("posts").observe(.childRemoved, with: { (postSnapShot) in
+            self.delegate?.removePost(forKey: postSnapShot.key)
         })
     }
     
@@ -82,7 +92,7 @@ class FirebaseHelper: NSObject {
     }
     
     func removeObserverForNewPosts() {
-        ref.removeObserver(withHandle: _refHandle)
+        ref.removeAllObservers()
     }
     
     // Private constructor

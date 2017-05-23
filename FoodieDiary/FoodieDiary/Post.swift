@@ -7,9 +7,20 @@
 //
 
 import Foundation
+import Firebase
 
 public struct Post {
+
+    var key: String
     var userName: String
     var text: String
     var imageUrl: String?
+    
+    init(_ snapShot: FIRDataSnapshot) {        
+        let post = snapShot.value as! [String: String]
+        key = snapShot.key
+        userName = post["name"] ?? "[Username]"
+        text = post["text"] ?? "Empty Post"
+        imageUrl = post["photoUrl"]
+    }
 }

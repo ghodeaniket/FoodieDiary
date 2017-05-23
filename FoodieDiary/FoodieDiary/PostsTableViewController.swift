@@ -22,6 +22,10 @@ class PostsTableViewController: UITableViewController, PostsDataSource {
 
         navigationItem.title = "Foodie Diary"
         FirebaseHelper.sharedInstance().delegate = self
+        
+        // start observing for addition/removal of posts
+        
+        FirebaseHelper.sharedInstance().addObserverForPosts()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -30,12 +34,15 @@ class PostsTableViewController: UITableViewController, PostsDataSource {
         posts.removeAll()
         
         tableView.reloadData()
-        FirebaseHelper.sharedInstance().addObserverForNewPosts()
+        
         ActivityIndicator.sharedInstance().startActivityIndicator(self)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+    }
+    
+    deinit {
         FirebaseHelper.sharedInstance().removeObserverForNewPosts()
     }
     
@@ -88,11 +95,9 @@ class PostsTableViewController: UITableViewController, PostsDataSource {
     }
     
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        if let cell = tableView.cellForRow(at: indexPath){
+        if let _ = tableView.cellForRow(at: indexPath){
             let currentPost = posts[indexPath.row]
             if currentPost.userName == FirebaseHelper.sharedInstance().displayName {
-                
-                // TODO: Remove the post from Firebase
                 return true
             }
         }
@@ -102,7 +107,19 @@ class PostsTableViewController: UITableViewController, PostsDataSource {
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            print("Delete")
+            let currentPost = posts[indexPath.row]
+            ActivityIndicator.sharedInstance().startActivityIndicator(self)
+            FirebaseHelper.sharedInstance().removePost(post: currentPost, completionHandler: { (error) in
+                performUIUpdatesOnMain {
+                    ActivityIndicator.sharedInstance().stopActivityIndicator(self)
+                    if let error = error {
+                        self.showAlert("Error", error.localizedDescription)
+                    } else {
+//                        self.posts.remove(at: indexPath.row)
+                        self.tableView.reloadData()
+                    }
+                }
+            })
         }
     }
     
@@ -113,4 +130,11 @@ class PostsTableViewController: UITableViewController, PostsDataSource {
         posts.append(newPost)
         tableView.reloadData()
     }
+    
+    func removePost(forKey key: String) {
+        if let index = posts.index(where: {$0.key == key}) {
+            posts.remove(at: index)
+        }
+        tableView.reloadData()
+    }    
 }

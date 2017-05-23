@@ -193,6 +193,7 @@
                         <outlet property="dismissKeyboardRecognizer" destination="jej-TC-ojH" id="0eP-uS-tUg"/>
                         <outlet property="postDescription" destination="i5w-y3-SPw" id="H7D-0w-gIv"/>
                         <outlet property="postImageView" destination="27k-c5-XRF" id="mZ5-fh-Geh"/>
+                        <outlet property="savePostButton" destination="Iqe-Yg-Teu" id="lf5-Dm-ETR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fJk-31-i25" userLabel="First Responder" sceneMemberID="firstResponder"/>

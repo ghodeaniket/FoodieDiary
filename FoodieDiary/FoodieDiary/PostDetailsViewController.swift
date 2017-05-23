@@ -21,6 +21,7 @@ class PostDetailsViewController: UIViewController, UINavigationControllerDelegat
     @IBOutlet weak var postImageView: UIImageView!
     @IBOutlet weak var postDescription: UITextView!
     @IBOutlet var dismissKeyboardRecognizer: UITapGestureRecognizer!
+    @IBOutlet weak var savePostButton: UIButton!
     
     // MARK: Life Cycle
     
@@ -38,10 +39,12 @@ class PostDetailsViewController: UIViewController, UINavigationControllerDelegat
     
     @IBAction func savePost(_ sender: Any) {
         if !postDescription.text.isEmpty {
+            savePostButton.isEnabled = false
             ActivityIndicator.sharedInstance().startActivityIndicator(self)
             FirebaseHelper.sharedInstance().addPost(post: postDescription.text!, photoData: photoData, completionHandler: { (error) in
                 performUIUpdatesOnMain {
                     ActivityIndicator.sharedInstance().stopActivityIndicator(self)
+                    self.savePostButton.isEnabled = true
                     if let _ = error {
                         self.showAlert("Error", "Unknown Error while adding post!")
                     }
