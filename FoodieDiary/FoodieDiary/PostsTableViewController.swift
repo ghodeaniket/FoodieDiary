@@ -86,7 +86,13 @@ class PostsTableViewController: UITableViewController, PostsDataSource {
             cell.postImageView.image = #imageLiteral(resourceName: "placeholder_rev")
         }
         cell.postContent.text = currentPost.text
-        cell.postAuthorLabel.text = "Added By \(currentPost.userName)"
+        
+        // if post if by current user
+        if currentPost.userName == FirebaseHelper.sharedInstance().displayName {
+            cell.postAuthorLabel.text = "Added by You"
+        } else {
+            cell.postAuthorLabel.text = "Added By \(currentPost.userName)"
+        }        
         return cell
     }
     
