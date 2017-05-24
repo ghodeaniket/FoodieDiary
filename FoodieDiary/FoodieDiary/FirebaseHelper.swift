@@ -75,7 +75,7 @@ class FirebaseHelper: NSObject {
             // Parse Snapshot and create Post object
             
             let newPost = Post(postSnapShot)
-            self.posts.append(newPost)
+            self.posts.insert(newPost, at: 0)
             self.delegate?.refreshDataSource()
         })
         
