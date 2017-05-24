@@ -18,6 +18,8 @@ class FirebaseHelper: NSObject {
     var user: FIRUser?
     var displayName = "Anonymous"
     
+    var posts = [Post]()
+    
     func configureDatabase() {
         print("Configure Database!")
         ref = FIRDatabase.database().reference()
@@ -26,9 +28,6 @@ class FirebaseHelper: NSObject {
     func configureStorage() {
         storageRef = FIRStorage.storage().reference()
     }
-    
-    
-    
     
     func addPost(post: String, photoData: Data?, completionHandler: @escaping (_ error: Error?) -> Void) {
         var data = [PostFields.text: post, PostFields.name: displayName]
@@ -63,7 +62,6 @@ class FirebaseHelper: NSObject {
     func removePost(post: Post, completionHandler: @escaping (_ error: Error?) -> Void) {
         ref.child("posts").child(post.key).removeValue { (error, snapShotRef) in
             if (error != nil) {
-                print("post removed!")
                 completionHandler(nil)
             } else {
                 completionHandler(error)
@@ -77,13 +75,15 @@ class FirebaseHelper: NSObject {
             // Parse Snapshot and create Post object
             
             let newPost = Post(postSnapShot)
-            performUIUpdatesOnMain {
-                self.delegate?.newPostAdded(newPost: newPost)
-            }            
+            self.posts.append(newPost)
+            self.delegate?.refreshDataSource()
         })
         
         ref.child("posts").observe(.childRemoved, with: { (postSnapShot) in
-            self.delegate?.removePost(forKey: postSnapShot.key)
+            if let index = self.posts.index(where: {$0.key == postSnapShot.key}) {
+                self.posts.remove(at: index)
+                self.delegate?.refreshDataSource()
+            }
         })
     }
     

@@ -6,6 +6,7 @@ This app allows users to:
 - Login to the app using email/password
 - Add reviews to recently visited eatery place
 - Add photos to the review (optional)
+- Remove reviews (User can remove their reviews posted by them only)
 
 ## Installation
 Download Apple’s IDE Xcode from the App Store,

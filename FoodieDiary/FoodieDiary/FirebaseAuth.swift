@@ -56,7 +56,6 @@ extension FirebaseHelper {
         if FIRAuth.auth()?.currentUser != nil {
             do {
                 try FIRAuth.auth()?.signOut()
-                print("You have successfully signed out!")
                 completionHandler(nil)
             } catch let error as NSError {
                 completionHandler(error)
@@ -68,7 +67,6 @@ extension FirebaseHelper {
         FIRAuth.auth()?.sendPasswordReset(withEmail: email, completion: { (error) in
             if error == nil {
                 //Print into the console if successfully logged in
-                print("Password reset email sent.")
                 completionHandler(nil)
             } else {
                 completionHandler(error!)

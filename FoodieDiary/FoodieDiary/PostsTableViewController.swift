@@ -30,12 +30,9 @@ class PostsTableViewController: UITableViewController, PostsDataSource {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        posts.removeAll()
-        
-        tableView.reloadData()
-        
-        ActivityIndicator.sharedInstance().startActivityIndicator(self)
+        if posts.count == 0 {
+            ActivityIndicator.sharedInstance().startActivityIndicator(self)
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -71,7 +68,6 @@ class PostsTableViewController: UITableViewController, PostsDataSource {
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return posts.count
     }
     
@@ -115,7 +111,6 @@ class PostsTableViewController: UITableViewController, PostsDataSource {
                     if let error = error {
                         self.showAlert("Error", error.localizedDescription)
                     } else {
-//                        self.posts.remove(at: indexPath.row)
                         self.tableView.reloadData()
                     }
                 }
@@ -124,17 +119,19 @@ class PostsTableViewController: UITableViewController, PostsDataSource {
     }
     
     // MARK: - Post Data Source
-    
-    func newPostAdded(newPost: Post) {
-        ActivityIndicator.sharedInstance().stopActivityIndicator(self)
-        posts.append(newPost)
-        tableView.reloadData()
-    }
-    
-    func removePost(forKey key: String) {
-        if let index = posts.index(where: {$0.key == key}) {
-            posts.remove(at: index)
+
+    func refreshDataSource() {
+        
+        performUIUpdatesOnMain {
+            
+            if self.posts.count == 0 {
+                ActivityIndicator.sharedInstance().stopActivityIndicator(self)
+            }
+            
+            self.posts = FirebaseHelper.sharedInstance().posts
+            self.tableView.reloadData()
+            self.tableView.setNeedsLayout()
         }
-        tableView.reloadData()
-    }    
+        
+    }
 }

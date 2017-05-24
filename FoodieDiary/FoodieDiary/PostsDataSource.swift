@@ -10,6 +10,5 @@ import Foundation
 
 
 public protocol PostsDataSource : NSObjectProtocol {
-    func newPostAdded(newPost: Post) -> Void
-    func removePost(forKey key: String) -> Void
+    func refreshDataSource() -> Void
 }
