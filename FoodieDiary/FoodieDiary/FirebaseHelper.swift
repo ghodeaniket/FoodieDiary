@@ -41,17 +41,35 @@ class FirebaseHelper: NSObject {
             metadata.contentType = "image/jpeg"
             
             // create a child node at imagepath with photoData and metadata
-            storageRef.child(imagePath).put(photoData, metadata: metadata) { (metadata, error) in
-                if let error = error {
-                    print("error uploading: \(error)")
-                    completionHandler(error)
-                    return
+            
+            isFirebaseReachable { (status) in
+                if status {
+                    self.storageRef.child(imagePath).put(photoData, metadata: metadata) { (metadata, error) in
+                        if let error = error {
+                            print("error uploading: \(error)")
+                            completionHandler(error)
+                            return
+                        }
+                        // set imageUrl value for the message
+                        data[PostFields.imageUrl] = self.storageRef.child((metadata?.path)!).description
+                        self.ref.child("posts").childByAutoId().setValue(data)
+                        completionHandler(nil)
+                    }
+                } else {
+                    self.storageRef.child(imagePath).put(photoData, metadata: metadata) { (metadata, error) in
+                        if let error = error {
+                            print("error uploading: \(error)")
+                            completionHandler(error)
+                            return
+                        }
+                        // set imageUrl value for the message
+                        data[PostFields.imageUrl] = self.storageRef.child((metadata?.path)!).description
+                        self.ref.child("posts").childByAutoId().setValue(data)
+                        completionHandler(nil)
+                    }
+                    completionHandler(nil)
                 }
-                // set imageUrl value for the message
-                data[PostFields.imageUrl] = self.storageRef.child((metadata?.path)!).description
-                self.ref.child("posts").childByAutoId().setValue(data)
-                completionHandler(nil)
-            }
+            }          
         } else {
             // like specifying "posts/[some auto id]"
             ref.child("posts").childByAutoId().setValue(data)
@@ -60,11 +78,19 @@ class FirebaseHelper: NSObject {
     }
     
     func removePost(post: Post, completionHandler: @escaping (_ error: Error?) -> Void) {
-        ref.child("posts").child(post.key).removeValue { (error, snapShotRef) in
-            if (error != nil) {
-                completionHandler(nil)
+        isFirebaseReachable { (status) in
+            if status {
+                self.ref.child("posts").child(post.key).removeValue { (error, snapShotRef) in
+                    if (error != nil) {
+                        completionHandler(nil)
+                    } else {
+                        completionHandler(error)
+                    }
+                }
             } else {
-                completionHandler(error)
+                self.ref.child("posts").child(post.key).removeValue()
+                // If offline return immediately since the operation is queued.
+                completionHandler(nil)
             }
         }
     }
@@ -93,6 +119,16 @@ class FirebaseHelper: NSObject {
     
     func removeObserverForNewPosts() {
         ref.removeAllObservers()
+    }
+    
+    func isFirebaseReachable(completionHandler: @escaping (_ status: Bool) -> Void) {
+        FIRDatabase.database().reference(withPath: ".info/connected").observe(.value, with: { snapshot in
+            if snapshot.value as? Bool ?? false {
+                completionHandler(true)
+            } else {
+                completionHandler(false)
+            }
+        })
     }
     
     // Private constructor

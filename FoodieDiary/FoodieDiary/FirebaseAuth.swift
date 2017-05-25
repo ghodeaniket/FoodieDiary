@@ -56,6 +56,8 @@ extension FirebaseHelper {
         if FIRAuth.auth()?.currentUser != nil {
             do {
                 try FIRAuth.auth()?.signOut()
+                // Remove posts from data source to avoid duplicates.
+                self.posts.removeAll()
                 completionHandler(nil)
             } catch let error as NSError {
                 completionHandler(error)

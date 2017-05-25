@@ -14,7 +14,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         // Set the status bar to light color
@@ -22,6 +21,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Setup connection with the Firebase FoodDiary App 
         FIRApp.configure()
+        
+        // enable disk persistence
+        FIRDatabase.database().persistenceEnabled = true
 
         configureInitialVC()
         
